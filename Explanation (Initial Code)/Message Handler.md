@@ -1,0 +1,30 @@
+`window_proc()` is responsible for handling messages sent to the window, such as user interactions (closing the window, resizing, etc.).
+#### **Breakdown of the function**
+
+```cpp
+LRESULT windowApp::window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+    switch (message) {
+        case WM_CLOSE:
+            DestroyWindow(window);
+            return 0;
+
+        case WM_DESTROY:
+            if (window == m_main)
+                PostQuitMessage(EXIT_SUCCESS);
+            return 0;
+    }
+    return DefWindowProcW(window, message, wparam, lparam);
+}
+```
+
+#### **How it works:**
+
+1. **Windows sends messages** to your application, and `window_proc()` handles them.
+2. **WM_CLOSE:**
+    - Triggered when the user tries to close the window (e.g., clicking the "X" button).
+    - The function `DestroyWindow(window)` is called to close it.
+3. **WM_DESTROY:**
+    - Triggered when the window is actually being destroyed.
+    - If the destroyed window is the **main window**, `PostQuitMessage(EXIT_SUCCESS)` is called to exit the application.
+4. **Default case (`DefWindowProcW`)**:
+    - If the message is not explicitly handled, it's forwarded to the default window procedure (`DefWindowProcW`), which ensures that other system messages (like keyboard and mouse events) are properly processed.

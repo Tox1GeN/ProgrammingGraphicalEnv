@@ -1,10 +1,11 @@
+#firstSteps
 A common way to set up a Windows application in Visual Studio using the Windows API:
 
 1. **Define an application class** that encapsulates the main logic of the application.
 2. **Register a window class** using `RegisterClassExW()`.
 3. **Create the main window** using `CreateWindowExW()`.
-4. **Implement a message loop** to handle system events (`WM_CLOSE`, `WM_DESTROY`, etc.).
-5. **Use a static window procedure** (`window_proc_static`) to forward messages to an instance-based handler.
+4. **Implement a [[Message Loop|message loop]]** to handle system events (`WM_CLOSE`, `WM_DESTROY`, etc.).
+5. **Use a static window procedure** ([[Message Handler]]) to forward messages to an instance-based handler.
 
 This approach follows a standard pattern used in most native Windows applications:
 ### **Header file**
@@ -39,7 +40,7 @@ public:
 #include "windowApp.h"
 #include <stdexcept>
 
-std::wstring const windowApp::s_class_name{ L"2048 Window" };
+std::wstring const windowApp::s_class_name{ L"SimpleApp" };
 
 bool windowApp::register_class() {
 	WNDCLASSEXW desc{};
@@ -61,7 +62,7 @@ HWND windowApp::create_window() {
 	
 		0 /*no extended styles*/,
 		s_class_name.c_str(),
-		L"2048",
+		L"SimpleApp",
 		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION |
 			WS_BORDER | WS_MINIMIZEBOX,
 		CW_USEDEFAULT, 0, /*default position*/
@@ -146,13 +147,13 @@ int WINAPI wWinMain(HINSTANCE instance,
  You can **absolutely** reuse this code as a starting point for future Windows applications. This setup provides a **solid foundation** that you can modify and extend depending on the requirements of each specific lab task. Remember that, you can:
 
 - Change the **class name** and window title.
-- Modify the **window styles** (e.g., `WS_OVERLAPPED`, `WS_MINIMIZEBOX`, etc.).
-- Extend the message loop to handle **keyboard input**, **timers**, or **graphics**.
-- Add **child windows** or **custom drawing logic** (as done later in the document).
+- Modify the [[Window Styles|window styles]] (e.g., `WS_OVERLAPPED`, `WS_MINIMIZEBOX`, etc.).
+- Extend the [[Message Handler|message handler]] to handle **keyboard input**, **timers**, or **graphics**.
+- Add **child windows** or **custom [[Drawing Logic|drawing logic]]** (as done later in the document).
 
 ### Things to keep in mind:
 
-- Your **future labs may require different features** (e.g., additional windows, timers, custom drawing).
+- Your **future projects may require different features** (e.g., additional windows, timers, custom drawing).
 - You might need to **modify** how messages are handled in `window_proc()`.
 - If you work on a **multi-window** application (like in later sections), you may need to manage **multiple window handles** (`HWND`).
 - Proper **resource management** (e.g., freeing allocated objects) will be important in larger projects.

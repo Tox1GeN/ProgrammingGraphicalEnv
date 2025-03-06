@@ -1,0 +1,274 @@
+The **drawing logic** is how Windows renders graphics in a window. In your code, the drawing logic is handled using **static controls (child windows)** instead of the **Graphics Device Interface (GDI)**.
+
+In provided code, the `CreateWindowExW` method is used to create both the **main window** and **child tiles**. Below, I’ll break down **each field** in your implementation of `CreateWindowExW`:
+
+```cpp
+HWND windowApp::create_window() {
+    return CreateWindowExW(
+        0 /*no extended styles*/,     // dwExStyle
+        s_class_name.c_str(),         // lpClassName
+        L"SimpleApp",                      // lpWindowName
+        WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_BORDER | WS_MINIMIZEBOX, // dwStyle
+        CW_USEDEFAULT, 0,             // X, Y
+        CW_USEDEFAULT, 0,             // nWidth, nHeight
+        nullptr,                      // hWndParent
+        nullptr,                      // hMenu
+        m_instance,                   // hInstance
+        this                          // lpParam
+    );
+}
+```
+
+---
+## **Explanation of Each Parameter in `CreateWindowExW`**
+
+```cpp
+HWND CreateWindowExW(
+    DWORD    dwExStyle,        // Extended window styles
+    LPCWSTR  lpClassName,      // Window class name
+    LPCWSTR  lpWindowName,     // Window title (caption)
+    DWORD    dwStyle,          // Standard window styles
+    int      X,                // Initial X position
+    int      Y,                // Initial Y position
+    int      nWidth,           // Window width
+    int      nHeight,          // Window height
+    HWND     hWndParent,       // Parent window handle
+    HMENU    hMenu,            // Handle to menu or child ID
+    HINSTANCE hInstance,       // Application instance handle
+    LPVOID   lpParam           // Additional application-defined parameter
+);
+```
+
+---
+
+### **1. `dwExStyle` (Extended [[Window Styles]])**
+
+```cpp
+0 /*no extended styles*/
+```
+
+| Style              | Description                                  |
+| ------------------ | -------------------------------------------- |
+| `WS_EX_TOPMOST`    | Window is always on top.                     |
+| `WS_EX_LAYERED`    | Enables transparency and opacity.            |
+| `WS_EX_NOACTIVATE` | The window will not gain focus when clicked. |
+**If you later want transparency, you may use:**
+
+```cpp
+WS_EX_LAYERED
+```
+
+and call `SetLayeredWindowAttributes()`.
+
+---
+
+### **2️. `lpClassName` (Window Class Name)**
+
+```cpp
+s_class_name.c_str()
+```
+
+- This **specifies the class name** used when registering the window.
+- In provided code, it's defined as:
+
+```cpp
+std::wstring const windowApp::s_class_name{ L"SimpleApp" };
+```
+
+- This **must match** the name used in `RegisterClassExW()`.
+
+---
+
+### **3️. `lpWindowName` (Window Title)**
+
+```cpp
+L"SimpleApp"
+```
+
+- This **sets the text shown in the window title bar**.
+- It appears at the **top of the window**.
+
+- **If you change this, the title bar will update.**
+
+```cpp
+L"My Custom Title"
+```
+
+---
+
+### **4️. `dwStyle` (Standard Window Styles)**
+
+```cpp
+WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_BORDER | WS_MINIMIZEBOX
+```
+
+This **controls the appearance and behavior** of the window.
+
+|Style|Description|
+|---|---|
+|`WS_OVERLAPPED`|Standard top-level window.|
+|`WS_SYSMENU`|Enables the **system menu** (right-click on the title bar).|
+|`WS_CAPTION`|Adds a **title bar** (with text).|
+|`WS_BORDER`|Adds a **thin border** around the window.|
+|`WS_MINIMIZEBOX`|Enables the **minimize button**.|
+
+- **If you want a resizable window, add `WS_SIZEBOX`:**
+
+```cpp
+WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION | WS_BORDER | WS_MINIMIZEBOX | WS_SIZEBOX
+```
+-  **If you want a fullscreen window, use:**
+
+```cpp
+WS_POPUP
+```
+
+---
+
+### **5️. `X, Y` (Window Position)**
+
+```cpp
+CW_USEDEFAULT, 0
+```
+
+- `CW_USEDEFAULT`: Lets Windows decide the **initial position**.
+- `0`: (Ignored when using `CW_USEDEFAULT`).
+
+- **If you want a specific position:**
+
+```cpp
+100, 100   // Starts the window at (100,100) on the screen
+```
+
+---
+
+### **6️. `nWidth, nHeight` (Window Size)**
+
+```cpp
+CW_USEDEFAULT, 0
+```
+
+- `CW_USEDEFAULT`: Windows **chooses a default size**.
+- `0`: (Ignored when using `CW_USEDEFAULT`).
+
+- **If you want a fixed size:**
+
+```cpp
+800, 600   // Creates an 800x600 window
+```
+
+- **If you want it to match the board size dynamically:**
+
+```cpp
+board::width, board::height
+```
+
+where `board::width` and `board::height` are calculated based on your tile layout.
+
+---
+
+### **7️. `hWndParent` (Parent Window)**
+
+```cpp
+nullptr
+```
+
+- **`nullptr`** means this is a **top-level window** (not a child of another window).
+- If you were creating a child window (like a tile inside the main window), you would pass the **parent window handle** here.
+
+- **For a child window inside the main window:**
+
+```cpp
+hWndParent
+```
+
+where `hWndParent` is the handle of the main window.
+
+---
+
+### **8️. `hMenu` (Menu Handle or Child ID)**
+
+```cpp
+nullptr
+```
+
+- **`nullptr`** means **no menu** is attached.
+- For **child windows**, this is used as the **control ID**.
+- If your window had a **menu**, you would use:
+
+```cpp
+hMenu = LoadMenu(m_instance, MAKEINTRESOURCE(IDR_MAINMENU));
+```
+
+---
+
+### **9️. `hInstance` (Application Instance)**
+
+```cpp
+m_instance
+```
+
+- This is the **instance handle** of the application.
+- It’s passed to **identify the app's executable module**.
+- It was retrieved in `wWinMain()`.
+
+- **This allows Windows to manage multiple instances of your app.**
+
+---
+
+### **10. `lpParam` (Custom Parameter for `WM_NCCREATE`)**
+
+```cpp
+this
+```
+
+- **Passes a pointer to the application class instance** (`app_2048`).
+- This is stored in `WM_NCCREATE` so that `window_proc_static()` can access the correct class instance.
+
+- **How it is used in `window_proc_static()`:**
+
+```cpp
+app_2048* app = static_cast<app_2048*>(p->lpCreateParams);
+SetWindowLongPtrW(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(app));
+```
+
+- This allows the **window procedure** to retrieve the `app_2048` instance.
+
+---
+
+## **Example: Alternative `CreateWindowExW` Usage**
+
+Here’s an alternative version for a **resizable**, **transparent**, **centered** window:
+
+```cpp
+HWND app_2048::create_window() {
+    return CreateWindowExW(
+        WS_EX_LAYERED,                // Enable transparency
+        s_class_name.c_str(),         // Window class name
+        L"My Custom Window",          // Window title
+        WS_OVERLAPPEDWINDOW,          // Standard window with maximize/minimize
+        100, 100,                     // X, Y position (centered)
+        800, 600,                     // Width, Height
+        nullptr,                      // No parent window
+        nullptr,                      // No menu
+        m_instance,                   // App instance
+        this                          // Pass `this` to retrieve instance later
+    );
+}
+```
+
+---
+
+## **Summary**
+
+- **`CreateWindowExW` is responsible for creating the window** and setting its properties.
+- **Each field controls a different aspect**:
+    - `dwStyle`: Defines **appearance** (title bar, border, buttons).
+    - `dwExStyle`: Enables **special behaviors** (transparency, always-on-top).
+    - `lpWindowName`: Sets the **window title**.
+    - `hWndParent`: Defines **parent-child relationships**.
+    - `lpParam`: **Passes custom data** (e.g., `this` pointer for object-oriented handling).
+- **Your current code creates a simple, fixed-size main window with a title bar.**
+- **You can modify it** to support transparency, resizing, menus, and different behaviors.
+### See Also:
+- [[Dynamic Window Resizing + GDI-Based Drawing|Handling dynamic window resizing and GDI-based drawing]]

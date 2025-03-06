@@ -1,3 +1,4 @@
+#firstSteps
 First we need to create a Visual Studio project that we will use to implement our solution.
 
 1. Start Visual Studio and click _Create a new project_.
@@ -30,4 +31,6 @@ First we need to create a Visual Studio project that we will use to implement ou
     - The first one **excludes rarely used parts** in `<windows.h>` header.
     - The second **disables `min` and `max` macros**, which tend to mess with the C++ standard library.
 
-The project should now **compile and run**, but the program **immediately exits**.
+The project should now **compile and run**, but the program **immediately exits**. 
+
+Continue the project building in [[Initial Code]].
