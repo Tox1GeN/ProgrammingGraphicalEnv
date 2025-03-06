@@ -2,7 +2,7 @@
 
 When the user resizes the window, the application should adjust its content dynamically.
 ```cpp
-LRESULT app_2048::window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+LRESULT windowApp::window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
     switch (message) {
         case WM_SIZE:
             {
@@ -38,7 +38,7 @@ LRESULT app_2048::window_proc(HWND window, UINT message, WPARAM wparam, LPARAM l
 
 This example **draws a red rectangle** in the window using **GDI (Graphics Device Interface)**.
 ```cpp
-void app_2048::on_paint(HWND window) {
+void windowApp::on_paint(HWND window) {
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(window, &ps);
 

@@ -222,17 +222,17 @@ m_instance
 this
 ```
 
-- **Passes a pointer to the application class instance** (`app_2048`).
+- **Passes a pointer to the application class instance** (`windowApp`).
 - This is stored in `WM_NCCREATE` so that `window_proc_static()` can access the correct class instance.
 
 - **How it is used in `window_proc_static()`:**
 
 ```cpp
-app_2048* app = static_cast<app_2048*>(p->lpCreateParams);
+windowApp* app = static_cast<windowApp*>(p->lpCreateParams);
 SetWindowLongPtrW(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(app));
 ```
 
-- This allows the **window procedure** to retrieve the `app_2048` instance.
+- This allows the **window procedure** to retrieve the `windowApp` instance.
 
 ---
 
@@ -241,7 +241,7 @@ SetWindowLongPtrW(window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(app));
 Here’s an alternative version for a **resizable**, **transparent**, **centered** window:
 
 ```cpp
-HWND app_2048::create_window() {
+HWND windowApp::create_window() {
     return CreateWindowExW(
         WS_EX_LAYERED,                // Enable transparency
         s_class_name.c_str(),         // Window class name

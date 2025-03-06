@@ -11,10 +11,14 @@
             "id": "e275a0ee8910896a",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "See Also Examples/Dynamic Window Resizing + GDI-Based Drawing.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Dynamic Window Resizing + GDI-Based Drawing"
             }
           }
         ]
@@ -70,7 +74,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -90,6 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "See Also Examples/Dynamic Window Resizing + GDI-Based Drawing.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for Dynamic Window Resizing + GDI-Based Drawing"
             }
           },
           {
@@ -108,11 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "See Also Examples/Dynamic Window Resizing + GDI-Based Drawing.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from Dynamic Window Resizing + GDI-Based Drawing"
             }
           },
           {
@@ -136,12 +143,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "See Also Examples/Dynamic Window Resizing + GDI-Based Drawing.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of Dynamic Window Resizing + GDI-Based Drawing"
             }
           }
         ]
@@ -161,11 +169,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e275a0ee8910896a",
+  "active": "a3f631d11b45f4ef",
   "lastOpenFiles": [
+    "Explanation (Initial Code)/Drawing Logic.md",
     "Initial Code.md",
     "Creating a Project.md",
-    "Explanation (Initial Code)/Drawing Logic.md",
     "See Also Examples/Dynamic Window Resizing + GDI-Based Drawing.md",
     "See Also Examples",
     "Cheatsheets/Window Styles.md",
