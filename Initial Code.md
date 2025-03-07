@@ -2,10 +2,10 @@
 A common way to set up a Windows application in Visual Studio using the Windows API:
 
 1. **Define an application class** that encapsulates the main logic of the application.
-2. **Register a window class** using `RegisterClassExW()`.
+2. **[[2. Register Step|Register]] a window class** using `RegisterClassExW()`.
 3. **Create the main window** using `CreateWindowExW()`.
-4. **Implement a [[Message Loop|message loop]]** to handle system events (`WM_CLOSE`, `WM_DESTROY`, etc.).
-5. **Use a static window procedure** ([[Message Handler]]) to forward messages to an instance-based handler.
+4. **Implement a [[6. Message Loop|message loop]]** to handle system events (`WM_CLOSE`, `WM_DESTROY`, etc.).
+5. **Use a static window procedure** ([[5. Message Handler]]) to forward messages to an instance-based handler.
 
 This approach follows a standard pattern used in most native Windows applications:
 ### **Header file**
@@ -148,8 +148,8 @@ int WINAPI wWinMain(HINSTANCE instance,
 
 - Change the **class name** and window title.
 - Modify the [[Window Styles|window styles]] (e.g., `WS_OVERLAPPED`, `WS_MINIMIZEBOX`, etc.).
-- Extend the [[Message Handler|message handler]] to handle **keyboard input**, **timers**, or **graphics**.
-- Add **child windows** or **custom [[Drawing Logic|drawing logic]]** (as done later in the document).
+- Extend the [[5. Message Handler|message handler]] to handle **keyboard input**, **timers**, or **graphics**.
+- Add **child windows** or **custom [[3. Drawing Logic|drawing logic]]** (as done later in the document).
 
 ### Things to keep in mind:
 
